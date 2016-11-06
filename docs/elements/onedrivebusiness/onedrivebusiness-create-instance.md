@@ -147,7 +147,7 @@ Below is a successful JSON response:
       "oauth.user.refresh_token": "<OAUTH_REFRESH_TOKEN>",
       "oauth.user.refresh_interval": "3599",
       "oauth.api.key": "<ONEDRIVEBUSINESS_CLIENT_ID>",
-      "document.tagging": "false",
+      "document.tagging": "true",
       "oauth.user.refresh_time": "1434646531161",
       "event.notification.enabled": "false"
     },
