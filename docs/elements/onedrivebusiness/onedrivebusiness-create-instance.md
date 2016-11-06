@@ -82,9 +82,10 @@ This instance.json file must be included with your instance request.  Please fil
     "code": "Code on Return the URL"
   },
   "configuration": {
+    "document.tagging": true,
     "oauth.api.key": "<INSERT_ONEDRIVE_BUSINESS_CLIENT_ID>",
-     "oauth.api.secret": "<INSERT_ONEDRIVE_BUSINESS_CLIENT_SECRET>",
-     "oauth.callback.url": "https://www.yourcallbackurl.com/oauth2callback"
+    "oauth.api.secret": "<INSERT_ONEDRIVE_BUSINESS_CLIENT_SECRET>",
+    "oauth.callback.url": "https://www.yourcallbackurl.com/oauth2callback"
   },
   "tags": [
     "<INSERT_TAGS>"
