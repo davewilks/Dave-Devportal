@@ -1,111 +1,69 @@
-!(function() {
 
-	var parseQueryFromURL = function() {
+function getQueryVariable(variable) {
+  var query = window.location.search.substring(1);
+  var vars = query.split('&');
 
-		var searchQuery = window.location.search;
-		if (!searchQuery) {
-			return null;
-		}
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split('=');
 
-		var regex = /[?&]([^=#]+)=([^&#]*)/g,
-			params = {},
-			match;
-		while (match = regex.exec(searchQuery)) {
-			params[match[1]] = match[2];
-		}
+    if (pair[0] === variable) {
+      return decodeURIComponent(pair[1].replace(/\+/g, '%20'));
+    }
+  }
+}
 
-		if (!params.hasOwnProperty("query")) {
-			return null;
-		}
+var searchTerm = getQueryVariable('query');
 
-		return decodeURIComponent(params.query);
 
-	};
+if (searchTerm) {
+  document.getElementById('search-box').setAttribute("value", searchTerm);
 
-	var scanPosts = function(posts, properties, query) {
+  // Initalize lunr with the fields it will be searching on. I've given title
+  // a boost of 10 to indicate matches on this field are more important.
+  var idx = lunr(function () {
+    this.field('id');
+    this.field('heading');
+    this.field('title', { boost: 10 });
+    this.field('author');
+    this.field('category');
+    this.field('url');
+    this.field('description');
+    this.field('content');
+  });
 
-		var results = [];
-		posts.forEach(function(post) {
-			var textToScan = "",
-				regex = new RegExp(query, "ig");
+  for (var key in window.store) { // Add the data to lunr
+    idx.add({
+      'id': key,
+      'heading': window.store[key].heading,
+      'title': window.store[key].title,
+      'author': window.store[key].author,
+      'category': window.store[key].category,
+      'url': window.store[key].url,
+      'description': window.store[key].description,
+      'content': window.store[key].content
+    });
 
-			properties.forEach(function(property) {
-				if (post.hasOwnProperty(property)) {
-					textToScan += post[property];
-				}
-			});
+    var results = idx.search(searchTerm); // Get lunr to perform a search
+    displaySearchResults(results, window.store); // We'll write this in the next section
+  }
+}
 
-			if (regex.test(textToScan)) {
-				results.push(post);
-			}
-		});
+function displaySearchResults(results, store) {
+  var searchResults = document.getElementById('search-results');
 
-		return results;
+  if (results.length) { // Are there any results?
+    var appendString = '';
 
-	};
+    for (var i = 0; i < results.length; i++) {  // Iterate over the results
+      var item = store[results[i].ref];
+      appendString += '<li><h3' + item.heading + '><h5>' + item.title + '</h5></a>';
+      appendString += '<a href="' + item.url + '"><h3>' + item.title + '</h3></a>';
+      appendString += '<p>' + item.description.substring(0, 150) + '...</p>';
+      appendString += '<p>' + item.content.substring(0, 150) + '...</p></li>';
+    }
 
-	var outputResults = function(results, el, query) {
-
-		var frag = document.createDocumentFragment();
-		results.forEach(function(result) {
-
-			var div = document.createElement("div");
-			div.className = "search-result col-md-12 text-xs-left";
-
-			var title = document.createElement("h4");
-			var url = document.createElement("a");
-			url.href = result.url;
-			url.innerHTML = result.title +" | "+ result.heading+ "<br>" + "<span class='search-description'>" + result.description + "</span>";
-			title.appendChild(url);
-
-			div.appendChild(title);
-
-			frag.appendChild(div);
-
-		});
-
-		el.appendChild(frag);
-
-	};
-
-  var Search = function(options) {
-
-		options = options || {};
-
-		if (!options.selector) {
-			throw new Error("We need a selector to find");
-		}
-
-		this.el = document.querySelector(options.selector);
-		if (!this.el) {
-			throw new Error("We need a HTML element to output to");
-		}
-
-		this.posts = JEKYLL_POSTS;
-		if (!this.posts) {
-			return this.el.innerHTML = this.noResultsMessage;
-		}
-
-		var defaultMessage = "<span class='error-message'>" + "Sorry, no results were found for " + parseQueryFromURL() + "</span>" + "<br>" + "<p class='p-t'><strong>Search Suggestions</strong></p>" + "<ul>" + "<li>Check your spelling</li>" + "<li>Try more general words i.e. Salesforce or Element Builder</li>";
-		this.noResultsMessage = options.noResultsMessage || defaultMessage;
-
-		var defaultProperties = ["title"];
-		this.properties = options.properties || defaultProperties;
-
-		this.query = parseQueryFromURL();
-		if (!this.query) {
-			return this.el.innerHTML = this.noResultsMessage;
-		}
-
-		this.results = scanPosts(this.posts, this.properties, this.query);
-		if (!this.results.length) {
-			return this.el.innerHTML = this.noResultsMessage;
-		}
-
-		outputResults(this.results, this.el, this.query);
-
-	};
-
-	window.jekyllSearch = Search;
-
-})();
+    searchResults.innerHTML = appendString;
+  } else {
+    searchResults.innerHTML = '<li>No results found</li>';
+  }
+}

@@ -1,6 +1,6 @@
 # devportal <sub><sup>| Cloud Elements developer portal</sup></sub>
 
-This site is based on [Jekyll](http://jekyllrb.com/), with a dash of [Twitter Bootstrap](http://themes.getbootstrap.com/products/dashboard) added.
+This site is powered by [Jekyll](http://jekyllrb.com/), with a [Twitter Bootstrap Theme](http://themes.getbootstrap.com/products/dashboard) added.
 
 The master branch is continuously deployed to production.
 

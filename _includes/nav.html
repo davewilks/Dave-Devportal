@@ -5,8 +5,8 @@
     <a class="icon icon-text-document status-link" href="http://changelog.cloud-elements.com/" target="_blank">CHANGE LOG</a>
       <div class="flextable">
         <div class="flextable-item flextable-primary">
-          <form action="{{ '/search' | prepend: site.baseurl }}" method="GET">
-            <input type="text" name="query" class="form-control" placeholder="Search Docs">
+          <form id="site-search" action="{{ '/search' | prepend: site.baseurl }}" method="GET">
+            <input type="text" name="query" id="search-box" class="form-control" placeholder="Search Docs">
           </form>
         </div>
         <div class="flextable-item flextable-primary icon">

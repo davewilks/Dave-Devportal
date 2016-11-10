@@ -19,6 +19,7 @@ layout: null
             "title" : "{{ page.title }}",
             "description"     : "{{ page.description }}",
             "url"      : "{{ site.baseurl }}{{ page.url }}"
+            "content"      : "{{ site.baseurl }}{{ page.content | strip_html | strip_newlines | remove_chars | escape | jsonify }}"
        {% endif %}
      } {% unless forloop.last %},{% endunless %}
   {% endfor %}
