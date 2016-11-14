@@ -14,6 +14,10 @@ The __Platform Level APIs__ give you the power to create Instances, retrieve OAu
 
 The required Platform Level APIs are Instances and Elements. These APIs are used to create Element Instances and retrieve OAuth Information if applicable.
 
+You can find the Platform APIs in the console in the API DOCS section of the menu.
+
+![Platform API Docs](https://cl.ly/1m2h1P0O113V/Image%202016-11-09%20at%202.00.08%20PM.png)
+
 When you are ready use the optional APIs, Organizations, Accounts, Hubs, and Usage to scale your system and meet your needs.
 ![Platform APIs](http://cloud-elements.com/wp-content/uploads/2014/10/APIDocsGuide3.png)
 

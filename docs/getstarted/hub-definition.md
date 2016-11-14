@@ -4,7 +4,7 @@ seo: Hub defined | Cloud Elements API Docs
 title: Hub defined
 description: Definition of a Hub
 layout: docs
-order: 3
+order: 4
 categories: [gettingstarted]
 ---
 
