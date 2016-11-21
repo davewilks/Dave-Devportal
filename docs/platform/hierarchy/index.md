@@ -1,10 +1,10 @@
 ---
 heading: Hierarchy
-seo: Hierarchy APIs Overview | Cloud Elements API Docs
+seo: Hierarchy Overview | Organization Structure | Account Structure
 title: Hierarchy
 description: Understand Cloud Elements Account Structure
 layout: docs
-platform: organizations
+platform: hierarchy
 breadcrumbs: /docs/platform/platform-docs.html
 parent: Back to Platform Docs
 order: 1
@@ -33,7 +33,7 @@ This default account will be the parent Organization account, and your admin use
 
 ## How to use
 
-As a SAAS provider, you will have a variety of customers. Lets say you have a customer "Best Buy." Best Buy has hundreds of users that will use your integrations. You can create a new Account in Cloud Elements that will represent "Best Buy." Then create user/s in that Sub Account. Then create instances for those sub users.  
+As a SAAS provider, you will have a variety of customers. Lets say you have a customer "Best Buy." Best Buy has hundreds of users that will use your integrations. You can create a new Account in Cloud Elements that will represent "Best Buy." Then create a user/s in that Sub Account. Then create instances for those sub users.  
 
 Because you have all Best Buy instances in a Sub Account, you can create Elements, Transformations, and Formulas that will only be inherited by your Best Buy customer.
 
