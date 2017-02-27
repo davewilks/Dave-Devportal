@@ -13,27 +13,37 @@ order: 3
 
 ## Element Builder UI BETA
 
-Element Builder gives you the ability to create custom integrations to cloud services using the Cloud Elements API Management Platform.  We are currently testing our BETA version.  __Currently only endpoints with a REST API can be built using Element Builder__.  Please [contact us](mailto:support@cloud-elements.com) if you are interested in participating in our round of BETA testing.
+<span style="color:red"> If this is no longer in Beta, we should remove those references.</span>
 
-Twitter will be used for this demonstration.  A new Twitter connected app must be created prior to building the Element.
+Element Builder gives you the ability to create custom integrations to cloud services using the Cloud Elements API Management Platform. Using Element Builder, you can configure an Element and publish it to your private Elements Catalog while automatically generating interactive API Documentation using Swagger 2.0. You can aggregate services by creating a Hub or mapping your new Element to an existing Hub. You can also utilize the normalized resources that we have already organized into Hubs, and leverage the same resources across any other Element you build.
 
-Cloud Elements strongly recommends researching the endpoint prior to starting any work in Element Builder.  It is important to answer the following questions about an endpoint:
+This guide is intended for individuals familiar with APIs, Javascript, and JSON. To create an Element we recommend that you have a thorough understanding of:
 
-* Is there public API Documentation?
-* Is the public API REST?
-* Does the endpoint require a connected app with an API key and secret be created?
-* What type of Authentication is expected (Basic, OAuth 1, OAuth 2)?
-* Does the endpoint support search by last updated date or have webhook support for events?
+* API authorization concepts, endpoint setup, and Javascript.
+* The API of the cloud service that you you are connecting to.
+* The cloud service API documentation.
+* The Cloud Elements Hub APIs  https://developers.cloud-elements.com/docs/hubs/hub-docs.html
 
-Prior to beginning work, research was done on the Twitter API.  The following was discovered:
+Before you begin, make sure that you know the answers to the following questions:
 
-* Twitter API Documentation: [https://dev.twitter.com/overview/documentation](https://dev.twitter.com/overview/documentation)
-* API is REST
-* Connected app required to connect to the endpoint
-* Authentication Type: __OAuth 1.0a__
-* Twitter does support search by last date updated
+* Where is the API documentation?
+* What kind of API? REST, SOAP, database?
+* What kind of authentication? OAuth 1 or 2? Basic? AWS V2 or V4?
+* Does the endpoint support events or bulk?
 
-The Twitter API is well documented with example calls of authentication, each entity/resource, and even code samples.  This is not always the case with every endpoint.
+## Workflow
+
+Element Builder is a tabbed wizard that walks you through the steps to build elements. On each tab you will enter information about the element. Although the tabs imply a linear workflow, you can move between tabs after you complete the first few. We document each tab, or workflow step, in it's own section of this guide:
+
+* [Set up the Cloud Service](#set-up-the-cloud-service)
+* [Start Element Builder in Cloud Elements](#start-element-builder-in-cloud-elements)
+* [Info Tab: Basic Information About the Element](#enter-basic-information-about-the-element)
+* [Configuration Tab: Set Up Element Configuration](#set-up-element-configuration)
+
+## Set up the Cloud Service
+
+<span style="color:red"> Use this section to describe what the user needs to get, whether it's setting up a connected app or  just acquiring the information that they need.</span>
+
 
 Let’s get started with the construction of the Twitter Element by first creating a new Twitter connected app.
 
@@ -60,92 +70,159 @@ Via a web browser, go to [https://apps.twitter.com/app/new](https://apps.twitter
 
 The next step is to log in to the [Cloud Elements API Manager](https://console.cloud-elements.com/elements/jsp/login.jsp) and begin building the Twitter Element.
 
-#### Create New elements
+## Start Element Builder in Cloud Elements
 
-Log in to the [Cloud Elements API Manager](https://console.cloud-elements.com/elements/jsp/login.jsp)
+After you get the information that you need to set up your element, begin the process in Cloud Elements.
 
-Click “Elements Builder”
-![Element Builder Info 1](http://cloud-elements.com/wp-content/uploads/2015/04/Info1.png)
+1. Log in to the [Cloud Elements API Manager](https://console.cloud-elements.com/elements/jsp/login.jsp).
+1. Click __Elements Builder__.
+1. Click __Build Element__.
+![Build Element](img/EB-Build-Element.png)
 
-Click “Build Element”
-![Element Builder Info 2](http://cloud-elements.com/wp-content/uploads/2015/04/Info2.png)
+Element Builder guides you through a series of pages where you define the element.
 
-#### Info Tab
+## Enter Basic Information About the Element
 
-Select a Hub e.g. Social
-Hubs map resources from a collection of endpoints (What we call Elements) into a uniform set of APIs.
-Add a new hub from the dropdown menu to create a new collection if our defaults do not meet your needs.
+![Info Tab](img/Progress_Info.png)
 
-Name of the new Element, e.g. Twitter or My Twitter Element
+If you are familiar with setting up an Element, just complete the [Quick Steps](#info-tab-quick-steps). If you need more information, see the reference tables: [Info Tab Basic Components](#info-tab-basic-components) and [Authentication Types](#authentication-types).
 
-Add a description for the new Element.
-e.g. Add a Twitter Instance to connect your existing Twitter account to the Social Hub, allowing you to manage your statuses, pictures, etc. across multiple Social Elements. You will need your Twitter account information to add an instance.
+### Info Tab Quick Steps
 
-Add a URL to an image or logo to represent the new Element.
+1. Select the Hub to associate with the Element.
+1. Enter the __Name__ that you want to use for the new element.
+1. Update or accept the default __Element Key__, which uniquely identifies the element.
+1. Enter a __Description__ to help users understand what the element is intended to do.
+1. Enter a __Logo URL__ for an image to associate with the element.
 
-Select the type of authentication the endpoint expects. The four types supported by Cloud Elements are Basic, OAuth 1, OAuth 2, and Custom.
-* __Basic__ is a type of authentication where an enduser provides a username and password. It is not always the username and password, some endpoints ask for the API key and secret without disclosing the enduser’s credentials.
-* The __OAuth 1__ protocol enables authentication to the endpoint without requiring users to expose their credentials. OAuth 1 is a 3 step authentication process. It is an older protocol. The OAuth 1 protocol involves signing the payload on every request and thus is used by many financial services.
-* __OAuth 2__ authentication is a newer two step process employed by many of the today’s modern cloud services like Google.
-* __Custom__ authentication is completely user defined, such as a username and password exchanged for an API key with some type of expiration involved.
+  * You can see the Name, Description, and Logo URL on the finished Element in the Element Catalog.
+  ![Element](img/Info.png)
 
-Click “Next”
-![Element Builder Info 3](http://cloud-elements.com/wp-content/uploads/2015/04/Info3.png)
+1. Select the __Authentication Type__ used by the cloud service API. Review the Authentication Type table to help select the appropriate authentication type.
+    __Note__: Most API documentation identifies the Authentication Type in an Authentication section. Be sure to read and udnersatnd the entire Authentication section.
+1. Select a __Protocol Type__.
+1. Click __Next__.
 
-#### Configuration Tab
+### Info Tab Basic Components
 
-Add the base URL to the endpoint.  The base URL is the endpoint where all API requests will be sent, e.g. [https://api.twitter.com/1.1](https://api.twitter.com/1.1).
-The Base URL can be found in most endpoint API Documentation within the Overview, Authentication, or Resources/Entities sections.
-The Twitter Base URL can be found in the Resources/Entities section.
+| Info Tab Components | Description    |
+| :------------- | :------------- |
+| Hub       | Hubs map resources from a collection of endpoints (What we call Elements) into a uniform set of APIs.<br />Add a new hub from the dropdown menu to create a new collection if our defaults do not meet your needs.     |
+| Name | The name of the Element. This helps form the default Element Key |
+| Element Key | A unique identifier of the element. The default comes from the Element Name. |
+| Description | Use the Description to provide detailed information about the Element |
+| Logo URL | The URL to the image associated with the Element. The Cloud Elements logo is the default. |
+| Authentication Type | See [Authentication Types](#authentication-types). |
+| Protocol Type | Use the Protocol Type to identify the kind of Element that you are building, REST, SOAP, or database. <br />- For REST APIs, select HTTP<br />- For integrations with databases, select JDBC<br />- For SOAP APIs, select SOAP. |
 
-Select the page size, e.g. 100 objects per page.
+### Authentication Types
 
-Select the paging type.
-Page is the default, but Offset is available to view portions of data, as well as, Cursor to move through large data sets.
+| Authentication Type | Description    |
+| :------------- | :------------- |
+| Basic      | Integrations authenticate with the cloud service via user name and password.       |
+| OAuth 1 | Integrations authenticate with the cloud service via OAuth 1. OAuth 1 does not require users to expose their credentials. OAuth 1 is a three step authentication process. The OAuth 1 protocol involves signing the payload on every request and thus is used by many financial services. <br /> While OAuth 1 provides a standard way to authenticate, many cloud services implement it in unique ways. Cloud Elements implements OAuth 1 to the specification defined at [OAuth Core 1.0 Revision A](https://tools.ietf.org/html/rfc5849) |
+| OAuth 2 | OAuth 2 authentication is a newer two step process employed by many of the today’s modern cloud services like Google. While it’s a reasonably simple protocol, it’s also not very strongly specified, so make sure you read the documentation below to make sure you’re using it correctly. <br /> While OAuth 2 provides a standard way to authenticate, many cloud services implement it in unique ways. Cloud Elements implements OAuth 2 to the specification defined at [OAuth.net](https://oauth.net/2/)|
+| AWS V2 | Amazon Web Services Signature Version 2 for older AWS resources. |
+| AWS V4 | Amazon Web Services Signature Version 4 for the latest AWS resources.|
+| Custom | For user defined authentications, such as passing an API key in the header or login requests made during provisioning where tokens are passed. <br /> Because OAuth 1 and 2 are implemented differently at different cloud services, you might need to choose Custom even if the cloud service. |
 
-Input the OAuth Authorization URL
-Most endpoints have this information in the Authentication section of the API Documentation.
-Twitter’s OAuth Authorization URL can be found at [https://dev.twitter.com/oauth/reference/get/oauth/authorize](https://dev.twitter.com/oauth/reference/get/oauth/authorize).
 
-Input the OAuth API Key
-The API Key is generated when the connected app is created.
 
-Input the OAuth API Secret
-The API Secret is generated when the connected app is created.
+## Set Up Element Configuration
 
-Input the OAuth Callback URL
-The same callback URL used when the connected app was created. In our example: `https://www.mycoolapp.com/oauth`.
+![Configuration Tab](img/Progress_Config.png)
 
-Input the OAuth Token URL
-Most endpoints have this information in the Authentication section of the API Documentation.
-Twitter’s OAuth Token URL can be found at [https://dev.twitter.com/oauth/reference/post/oauth/access_token](https://dev.twitter.com/oauth/reference/post/oauth/access_token).
+Use the Configuration tab to set up Element-level configurations. This is different than resource-level configurations. The Configuration tab includes different parameters depending on the Authentication Types and Protocol Types that you selected on the Info tab.            
 
-Input the OAuth Scope (Optional)
-Some endpoints require read and write privileges to objects. This information can be found in the Authentication section of most endpoint API documentation.
+Depending on the cloud service, element configurations can be complicated, so this section includes step-by-step instructions and reference material.
 
-Input the OAuth Token URL
-Most endpoints have this information in the Authentication section of the API Documentation.
-Twitter’s OAuth Token URL can be found at [https://dev.twitter.com/oauth/reference/post/oauth/request_token](https://dev.twitter.com/oauth/reference/post/oauth/request_token).
+* Instructions
+  * [Quick Steps](#configuration-tab-quick-steps)
+  * [Adding Element Configurations](#adding-element-configurations)
+  * [Adding Element Parameters](#adding-element-parameters)
+  * [Adding Element Hooks](#adding-element-hooks)
+* References
+  * [Base URL and Pagination](#base-url-and-pagination)
+  * [OAuth Authorization](#oauth-authorization)
 
-Select the OAuth Request Authorization Type
-Cloud Elements supports two types: Query and Header
-Query will send the request in the URL path, while Header will send the request as a header.
+### Configuration Tab Quick Steps
 
-Select the Accept Header and the Content Type Header
-Cloud Elements supports two types: JSON and XML.
-Please select the type the endpoint expects. In our example, Twitter expects JSON payloads.
+1. Enter the __Base URL__ (or __jdbc URL__ for JDBC Protocol Types) where all API Requests will be sent. See [Base URL and Pagination](#base-url-and-pagination).
+1. Enter the __Max Page Size__ supported by the cloud service. See [Base URL and Pagination](#base-url-and-pagination).
+1. Select the __Pagination Type__ supported by the cloud service. See [Base URL and Pagination](#base-url-and-pagination).
+1. If the Cloud Service uses OAUth 1 or OAuth 2, complete the following: See [OAuth Authorization](#oauth-authorization).
+  * OAuth Authorization Url:
+  * OAuth API Key:
+  * OAuth API Secret
+  * OAuth Callback URL:
+  * OAuth Token URL:
+  * OAuth Scope:
+  * OAuth Request Token URL (OAuth 1):
+  * OAuth Request Authorization Type (OAuth 1):
+  * Oauth Refresh Token Url (OAuth 2):
+  * Oauth Revoke Token Url (OAuth 2):
+1. Select the format of the request (__Accept Header__) and response (__Content-Type Header__) types. Cloud Elements supports JSON and XML.
+1. Set up any configuration required for the Element. A value which is stored when a connection to the endpoint is created. This value is populated via user input and will be used when invoking the API, e.g. an api_key and api_secret. See [Adding Element Configurations](#adding-element-configurations).
+1. Set up parameters. A globally defined value that will apply to all API calls. Parameters can be sent as a header, path, query, body. See [Adding Element Parameters](#adding-element-parameters).
+1. Set up hooks. re-Hook: Action you wish to execute prior to sending API calls e.g. manipulating or adding data (query, header, path, body, configuration). Post-Hook: Modify the response data (body, header, configuration) on the return call from the endpoint. See [Adding Element Hooks](#adding-element-hooks)
+1. Click __Next__.
 
-Click “Next”
+### Base URL and Pagination
 
-Configurations, Parameters, and Hooks will not be covered in this guide as Twitter does not require any beyond the defaults provided by Element Builder.
+| Component   | Description     |
+| :------------- | :------------- |
+| Base URL <br /> Jdbc URL      | The entry point URL to the API. This is typically located in a "Base URL" section of the API documentation.       |
+| Max Page Size (or limit) | The maximum number of objects to receive as supported by the cloud service. This is typically found in the "Pagination" or "Paging" sections of the API documentation. |
+| Pagination Type | Allows you to modify how large result sets are split into individual pages of data. <br />- page starts with 1 or 0: some cloud services start pagination at one and others at zero. Check the cloud service API documentation. <br />- offset: select if the cloud service uses offsets and you want to access a portion of the data. <br />- cursor: select if the cloud service uses cursor pagination types to enable navigation through large data sets. In the API docs, you can also look for references to "next page token"|
 
-However, here are some definitions:
+### OAuth Authorization
 
-* __Configuration__: A value which is stored when a connection to the endpoint is created. This value is populated via user input and will be used when invoking the API, e.g. an api_key and api_secret.
-* __Parameter__: A globally defined value that will apply to all API calls. Parameters can be sent as a header, path, query, body.
-* __Hooks__: Pre-Hook: Action you wish to execute prior to sending API calls e.g. manipulating or adding data (query, header, path, body, configuration).
-Post-Hook: Modify the response data (body, header, configuration) on the return call from the endpoint.
-![Element Builder Configuration 1](http://cloud-elements.com/wp-content/uploads/2015/04/Configuration1.png)
+Element builder enables you to quickly set up OAuth 1 and OAuth 2 standard flows. However, if the cloud services deviates, you can use the Configuration and Parameters sections to support those differences.
+
+| OAuth Parameter | Description     |
+| :------------- | :------------- |
+| OAuth Authorization Url       | Most endpoints have this information in the Authentication section of the API Documentation       |
+| OAuth API Key | The API Key is generated when the connected app is created. |
+| OAuth API Secret | he API Secret is generated when the connected app is created. |
+| OAuth Callback URL | The same callback URL used when the connected app was created. In our example: `https://www.mycoolapp.com/oauth`. |
+| OAuth Token URL | Most endpoints have this information in the Authentication section of the API Documentation. |
+| OAuth Scope  | Some endpoints require read and write privileges to objects. This information can be found in the Authentication section of most endpoint API documentation. |
+| OAuth Request Token URL (OAuth 1) |  |
+| OAuth Request Authorization Type (OAuth 1) |  |
+| Oauth Refresh Token Url |  |
+| Oauth Revoke Token Url |  |
+
+### Adding Element Instance Configurations
+
+Each Element includes Instance Configuration parameters that are required to provision an instance of an element. This includes all client-specific information required by the cloud service.
+
+When you provision instances of any element, you must complete Instance Configuration
+
+* Base URL requires a variable to accommodate for client or user specific ID
+
+#### Element Configuration Parameters
+
+|  Configuration Parameter    | Description     | More |
+| :------------- | :------------- | :------------- |
+| Key       | A unique identifier for the configuration.  |
+| Name | The name that appears in the Instance Configuration. |
+| Type | The type of field that will appear to the user in Instance Configuration. <br />If you do not display the configuration as an Instance Configuration, select a type that matches the configuration. |  - Boolean: The field appears with True and False options. <br /> password encrypted |
+| Is it Required? |  |
+| Description |  |
+| Default Value |  |
+| Hide from console? |  |
+| Display Order |  |
+
+
+
+### Adding Element Parameters
+
+
+
+### Adding Element Hooks
+
+
+
 
 #### Instance Tab
 
