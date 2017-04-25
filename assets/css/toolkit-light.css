@@ -58,6 +58,9 @@ h1 {
   font-size: 2em;
   margin: 0.67em 0;
 }
+
+
+
 mark {
   background: #ff0;
   color: #000;
@@ -169,12 +172,14 @@ optgroup {
   font-weight: bold;
 }
 table {
-  border-collapse: collapse;
-  border-spacing: 0;
+border-style: solid;
+ border-collapse: collapse;
 }
 td,
 th {
-  padding: 0;
+  padding: 3px;
+  border-width: 1px;
+  border-style: solid;
 }
 /*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */
 @media print {
@@ -9887,4 +9892,22 @@ fieldset[disabled] .btn-danger-outline.active {
 .btn-danger-outline .badge {
   color: #ffffff;
   background-color: #e33145;
+}
+h2 {
+  font-size: 1.75em;
+  margin: 0.67em 0;
+  border-top: 1px;
+}
+h3 {
+  font-size: 1.5em;
+  margin: 0.67em 0;
+  padding-top: 10px;
+}
+h4 {
+  font-size: 1.25em;
+  margin: 0.67em 0;
+}
+
+th {
+  background-color: #c0c0c0;
 }
